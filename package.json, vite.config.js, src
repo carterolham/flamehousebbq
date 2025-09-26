@@ -1,0 +1,240 @@
+{
+  "name": "flamehousebbq",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.14.1"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "tailwindcss": "^3.5.0",
+    "postcss": "^8.4.21",
+    "autoprefixer": "^10.4.14"
+  }
+}
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    port: 5173
+  }
+})
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carter's Flamehouse</title>
+  </head>
+  <body class="bg-flamebg text-gray-100">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        flamegold: '#D4AF37',
+        flamebg: '#0a0a0a'
+      },
+      fontFamily: {
+        serif: ['Georgia', 'serif']
+      }
+    }
+  },
+  plugins: [],
+}
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
+# FlamehouseBBQ - Vite + React + Tailwind (Minimal Luxury)
+
+This project is a minimal, fast, black-&-gold styled multi-page site for Carter's Flamehouse.  
+It's designed to load reliably on restricted networks (school Chromebook/Winfy.net) while still looking premium.
+
+## Quick setup (locally or on GitHub + Vercel)
+
+1. Install dependencies:
+   ```bash
+   npm install
+npm run dev
+
+---
+
+### `src/main.jsx`
+```jsx
+import React from 'react'
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+import App from './App'
+import './styles.css'
+
+createRoot(document.getElementById('root')).render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+)
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom minimal styling */
+body {
+  @apply bg-flamebg text-gray-100;
+}
+
+.header-title {
+  @apply text-flamegold font-serif text-3xl md:text-4xl;
+}
+
+.container {
+  @apply max-w-4xl mx-auto px-4;
+}
+
+.nav-link {
+  @apply text-flamegold hover:underline px-3;
+}
+
+.card {
+  @apply bg-neutral-900/60 p-4 rounded-lg ring-1 ring-flamegold/20;
+}
+import React from 'react'
+
+export default function About() {
+  return (
+    <div className="container py-8">
+      <h2 className="header-title mb-4">About Carter&apos;s Flamehouse</h2>
+      <p className="mb-4">
+        Carter&apos;s Flamehouse blends slow smoke techniques with fine dining presentation. 
+        We focus on premium ingredients, signature sauces, and a memorable dining experience.
+      </p>
+      <ul className="list-disc pl-5 space-y-2">
+        <li>Premium meats & sustainable sourcing</li>
+        <li>In-house sauces, rubs, and breads</li>
+        <li>Curated whiskey and cocktail program</li>
+      </ul>
+    </div>
+  )
+}
+import React from 'react'
+
+const sections = {
+  Starters: [
+    'Charred Bone Marrow & Herb Toast',
+    'Flame-Seared Wagyu Bites',
+    'Smoked Lobster Mac Mini',
+    'Grilled Oysters Rockefeller',
+    'Fire-Roasted Stuffed Peppers'
+  ],
+  Mains: [
+    'The Carter Tomahawk (40oz Wagyu)',
+    'BBQ Lobster Surf & Turf',
+    'Fire-Kissed Ribeye',
+    'Charcoal-Smoked Porterhouse',
+    '12-Hour Smoked Brisket'
+  ],
+  Sides: [
+    'Truffle-Smoked Mac & Cheese',
+    'Charred Brussels with Maple-Bacon Glaze',
+    'Garlic-Parmesan Flame Fries',
+    'Smoked Sweet Potato Purée'
+  ],
+  Desserts: [
+    'Campfire Bourbon Bread Pudding',
+    'Flamehouse Molten Lava Cake',
+    'Grilled Peach & Mascarpone Tart'
+  ],
+  Drinks: [
+    'The Ember Old Fashioned',
+    "Carter's Smoked Manhattan",
+    'The Charred Lemon Drop',
+    'Midnight Ember Espresso Martini'
+  ]
+}
+
+export default function Menu() {
+  return (
+    <div className="container py-8">
+      <h2 className="header-title mb-6">Menu</h2>
+      {Object.entries(sections).map(([section, items]) => (
+        <div key={section} className="mb-6">
+          <h3 className="text-xl font-semibold mb-2">{section}</h3>
+          <ul className="space-y-1">
+            {items.map((item, i) => (
+              <li key={i} className="card">{item}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  )
+}
+import React, { useState } from 'react'
+
+export default function Reservations() {
+  const [sent, setSent] = useState(false)
+
+  function onSubmit(e) {
+    e.preventDefault()
+    const form = new FormData(e.target)
+    const name = form.get('name')
+    const email = form.get('email')
+    const date = form.get('date')
+    const time = form.get('time')
+    const party = form.get('party')
+
+    const subject = encodeURIComponent('Reservation Request from ' + name)
+    const body = encodeURIComponent(
+      `Name: ${name}\nEmail: ${email}\nDate: ${date}\nTime: ${time}\nParty: ${party}`
+    )
+
+    window.location.href = `mailto:hello@flamehousebbq.com?subject=${subject}&body=${body}`
+    setSent(true)
+  }
+
+  return (
+    <div className="container py-8">
+      <h2 className="header-title mb-4">Reservations</h2>
+      {!sent ? (
+        <form onSubmit={onSubmit} className="space-y-4 max-w-md">
+          <input className="card w-full" name="name" placeholder="Name" required />
+          <input className="card w-full" type="email" name="email" placeholder="Email" required />
+          <input className="card w-full" type="date" name="date" required />
+          <input className="card w-full" type="time" name="time" required />
+          <input className="card w-full" type="number" name="party" placeholder="Party Size" required />
+          <button className="nav-link" type="submit">Request Reservation</button>
+        </form>
+      ) : (
+        <p>Mail app opened — follow instructions to send reservation.</p>
+      )}
+    </div>
+  )
+}
+import React from 'react'
+
+export default function Contact() {
+  return (
+    <div className="container py-8">
+      <h2 className="header-title mb-4">Contact</h2>
+      <p>📞 Phone: (555) 123-FLAME</p>
+      <p>📧 Email: hello@flamehousebbq.com</p>
+      <p>📍 Address: 123 Ember Lane, Your City, ST</p>
+      <p>⏰ Hours: Mon–Thu 5–10 • Fri–Sat 5–11 • Sun 4–9</p>
+    </div>
+  )
+}
